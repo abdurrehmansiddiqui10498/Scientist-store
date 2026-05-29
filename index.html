@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Bubloo Scientist's Store catalog and admin-managed science storefront.">
+    <title>Bubloo Scientist's Store</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <button class="brand-button" data-scroll="#home" aria-label="Go to home">
+        <span id="brandName">Bubloo Scientist's Store</span>
+      </button>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-link" data-scroll="#home">Home</button>
+        <button class="nav-link" data-scroll="#catalog">Catalog</button>
+        <button class="nav-link" data-scroll="#contact">Contact</button>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-button" id="searchToggle" aria-label="Search products" title="Search">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m21 21-4.35-4.35M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z"></path>
+          </svg>
+        </button>
+        <button class="profile-button" id="profileButton" aria-label="Profile">
+          <span id="profileInitial">Sign in</span>
+        </button>
+        <button class="icon-button cart-button" id="cartButton" aria-label="Open cart" title="Cart">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M6 8h12l-1 12H7L6 8Zm3 0a3 3 0 0 1 6 0M4 8h16"></path>
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="search-drawer" id="searchDrawer" hidden>
+      <label for="siteSearch">Search catalog</label>
+      <input id="siteSearch" type="search" placeholder="Search database, lab, technology...">
+    </div>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-copy">
+          <p class="eyebrow">Science tools, digital systems, and learning kits</p>
+          <h1 id="heroTitle">Unlock your potential in Science</h1>
+          <p id="heroBody">Browse focused products for students, creators, and technology-minded builders.</p>
+          <div class="hero-actions">
+            <button class="primary-action" data-scroll="#catalog">Shop now</button>
+            <button class="secondary-action" id="heroProfileAction">Profile</button>
+          </div>
+        </div>
+        <div class="hero-media">
+          <img id="heroImage" src="assets/home-hero.jpg" alt="Technology team workspace">
+        </div>
+      </section>
+
+      <section class="notice-band" aria-live="polite">
+        <span id="storeNotice">After a buyer registers an order, the admin will contact them soon. Stay alerted.</span>
+      </section>
+
+      <section class="featured-section" aria-labelledby="featuredTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Featured catalog</p>
+          <h2 id="featuredTitle">Built from your Shopify theme reference</h2>
+        </div>
+        <div class="feature-grid">
+          <article>
+            <img src="assets/20260527_203234.jpeg" alt="Technology team workspace reference">
+            <h3>Growth focused storefront</h3>
+            <p>Clean navigation, product discovery, and a profile button that changes for admins and local users.</p>
+          </article>
+          <article>
+            <img src="assets/admin-customization.png" alt="Admin customization reference">
+            <h3>Admin customization</h3>
+            <p>Admins can update the store name, hero copy, accent color, and publish new products.</p>
+          </article>
+          <article>
+            <img src="assets/buyer-contact-flow.png" alt="Buyer contact flow reference">
+            <h3>Buyer contact flow</h3>
+            <p>Checkout collects name, email, and phone number so the admin can follow up.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="catalog-section" id="catalog" aria-labelledby="catalogTitle">
+        <div class="catalog-heading">
+          <div>
+            <p class="eyebrow">Products</p>
+            <h2 id="catalogTitle">Catalog</h2>
+          </div>
+          <div class="catalog-meta">
+            <span id="resultCount">0 items</span>
+            <div class="view-toggle" aria-label="Catalog view">
+              <button class="icon-button active" data-view="grid" aria-label="Grid view" title="Grid view">
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M4 4h6v6H4V4Zm10 0h6v6h-6V4ZM4 14h6v6H4v-6Zm10 0h6v6h-6v-6Z"></path>
+                </svg>
+              </button>
+              <button class="icon-button" data-view="list" aria-label="List view" title="List view">
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="filters" aria-label="Catalog filters">
+          <label>
+            Availability
+            <select id="availabilityFilter">
+              <option value="all">All</option>
+              <option value="in-stock">In stock</option>
+              <option value="sale">Sale</option>
+            </select>
+          </label>
+          <label>
+            Price
+            <select id="priceSort">
+              <option value="featured">Featured</option>
+              <option value="low">Low to high</option>
+              <option value="high">High to low</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="product-grid" id="productGrid"></div>
+      </section>
+
+      <section class="contact-section" id="contact" aria-labelledby="contactTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Contact</p>
+          <h2 id="contactTitle">Contact</h2>
+        </div>
+        <form class="contact-form" id="contactForm">
+          <div class="form-row">
+            <label>
+              Name
+              <input name="name" type="text" placeholder="Name" required>
+            </label>
+            <label>
+              Email
+              <input name="email" type="email" placeholder="you@example.com" required>
+            </label>
+          </div>
+          <label>
+            Phone
+            <input name="phone" type="tel" placeholder="Phone">
+          </label>
+          <label>
+            Comment
+            <textarea name="comment" rows="7" placeholder="Comment" required></textarea>
+          </label>
+          <button class="primary-action" type="submit">Send message</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <h2 id="footerBrand">Bubloo Scientist's Store</h2>
+        <nav aria-label="Footer navigation">
+          <button data-scroll="#home">Home</button>
+          <button data-scroll="#catalog">Catalog</button>
+          <button data-scroll="#contact">Contact</button>
+        </nav>
+      </div>
+      <div>
+        <h3>Main menu</h3>
+        <a href="#home">About us</a>
+        <a href="#catalog">Return policy</a>
+        <a href="#contact">Help & Questions</a>
+      </div>
+      <form class="newsletter-form" id="newsletterForm">
+        <h3>Stay ahead of trends</h3>
+        <div class="inline-form">
+          <input type="email" name="newsletter" placeholder="Email address" required>
+          <button class="primary-action" type="submit">Sign up</button>
+        </div>
+      </form>
+    </footer>
+
+    <dialog class="modal" id="authModal">
+      <div class="modal-shell">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">Profile</p>
+            <h2 id="authTitle">Sign in</h2>
+          </div>
+          <button class="icon-button" data-close="authModal" aria-label="Close auth" title="Close">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M18 6 6 18M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="segmented-control" role="tablist" aria-label="Account type">
+          <button class="active" type="button" data-auth-role="user">Local user</button>
+          <button type="button" data-auth-role="admin">Admin</button>
+        </div>
+
+        <div class="mode-tabs" id="authModeTabs" aria-label="Local user mode">
+          <button class="active" type="button" data-auth-mode="signin">Sign in</button>
+          <button type="button" data-auth-mode="signup">Create account</button>
+        </div>
+
+        <p class="helper-text" id="authHelp">Local users can create an account and buy from the catalog.</p>
+
+        <form id="authForm" class="stack-form">
+          <label class="auth-extra" id="nameField">
+            Name
+            <input id="authName" type="text" autocomplete="name" placeholder="Your name">
+          </label>
+          <label>
+            Email
+            <input id="authEmail" type="email" autocomplete="email" placeholder="email@example.com" required>
+          </label>
+          <label class="auth-extra" id="phoneField">
+            Phone
+            <input id="authPhone" type="tel" autocomplete="tel" placeholder="Phone number">
+          </label>
+          <label>
+            Password
+            <input id="authPassword" type="password" autocomplete="current-password" placeholder="Password" required>
+          </label>
+          <button class="primary-action" id="authSubmit" type="submit">Sign in</button>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog class="modal wide-modal" id="adminModal">
+      <div class="modal-shell">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">Admin dashboard</p>
+            <h2>Customize store</h2>
+          </div>
+          <button class="icon-button" data-close="adminModal" aria-label="Close admin" title="Close">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M18 6 6 18M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="admin-layout">
+          <section aria-labelledby="settingsTitle">
+            <h3 id="settingsTitle">Website settings</h3>
+            <form class="stack-form" id="settingsForm">
+              <label>
+                Store name
+                <input id="settingStoreName" type="text" required>
+              </label>
+              <label>
+                Hero title
+                <input id="settingHeroTitle" type="text" required>
+              </label>
+              <label>
+                Hero text
+                <textarea id="settingHeroBody" rows="3" required></textarea>
+              </label>
+              <label>
+                Hero image
+                <select id="settingHeroImage"></select>
+              </label>
+              <label>
+                Buyer notice
+                <input id="settingNotice" type="text" required>
+              </label>
+              <input id="settingAccent" type="hidden">
+              <div>
+                <span class="field-label">Accent color</span>
+                <div class="swatch-row" id="accentChoices"></div>
+              </div>
+              <button class="primary-action" type="submit">Save website</button>
+            </form>
+          </section>
+
+          <section aria-labelledby="productAdminTitle">
+            <h3 id="productAdminTitle">Add product</h3>
+            <form class="stack-form" id="productForm">
+              <div class="form-row compact">
+                <label>
+                  Product name
+                  <input id="productName" type="text" required>
+                </label>
+                <label>
+                  Category
+                  <input id="productCategory" type="text" required>
+                </label>
+              </div>
+              <div class="form-row compact">
+                <label>
+                  Price
+                  <input id="productPrice" type="number" min="0" step="1" required>
+                </label>
+                <label>
+                  Compare price
+                  <input id="productCompare" type="number" min="0" step="1">
+                </label>
+                <label>
+                  Stock
+                  <input id="productStock" type="number" min="0" step="1" value="10" required>
+                </label>
+              </div>
+              <label>
+                Upload image
+                <input id="productImageUpload" type="file" accept="image/*" required>
+              </label>
+              <div class="upload-preview" id="productImagePreview" aria-live="polite">
+                <span>No image selected</span>
+              </div>
+              <label>
+                Description
+                <textarea id="productDescription" rows="3" required></textarea>
+              </label>
+              <button class="primary-action" type="submit">Publish product</button>
+            </form>
+          </section>
+        </div>
+
+        <section class="admin-products" aria-labelledby="currentProductsTitle">
+          <h3 id="currentProductsTitle">Current products</h3>
+          <div id="adminProductList" class="admin-list"></div>
+        </section>
+
+        <section class="admin-products" aria-labelledby="ordersTitle">
+          <h3 id="ordersTitle">Buyer registrations</h3>
+          <div id="ordersList" class="order-list"></div>
+        </section>
+
+        <div class="modal-actions">
+          <button class="secondary-action" id="logoutAdmin" type="button">Log out admin</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="modal" id="profileModal">
+      <div class="modal-shell">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">Local user</p>
+            <h2>Your profile</h2>
+          </div>
+          <button class="icon-button" data-close="profileModal" aria-label="Close profile" title="Close">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M18 6 6 18M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div id="profileSummary" class="profile-summary"></div>
+        <div class="modal-actions">
+          <button class="secondary-action" id="logoutUser" type="button">Log out</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="modal" id="cartModal">
+      <div class="modal-shell">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">Catalog</p>
+            <h2>Your cart</h2>
+          </div>
+          <button class="icon-button" data-close="cartModal" aria-label="Close cart" title="Close">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M18 6 6 18M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="cart-total">
+          <span>Total</span>
+          <strong id="cartTotal">$0</strong>
+        </div>
+        <div class="modal-actions">
+          <button class="secondary-action" id="clearCart" type="button">Clear</button>
+          <button class="primary-action" id="checkoutButton" type="button">Checkout</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="modal" id="checkoutModal">
+      <div class="modal-shell">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">Buyer registration</p>
+            <h2>Checkout details</h2>
+          </div>
+          <button class="icon-button" data-close="checkoutModal" aria-label="Close checkout" title="Close">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M18 6 6 18M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <p class="helper-text">Enter the contact details the admin should use for this order.</p>
+        <form id="checkoutForm" class="stack-form">
+          <label>
+            Name
+            <input id="buyerName" type="text" autocomplete="name" required>
+          </label>
+          <label>
+            Email address
+            <input id="buyerEmail" type="email" autocomplete="email" required>
+          </label>
+          <label>
+            Phone number
+            <input id="buyerPhone" type="tel" autocomplete="tel" required>
+          </label>
+          <div class="cart-total">
+            <span>Order total</span>
+            <strong id="checkoutTotal">$0</strong>
+          </div>
+          <button class="primary-action" type="submit">Register order</button>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog class="modal" id="successModal">
+      <div class="modal-shell success-shell">
+        <div class="success-mark" aria-hidden="true">OK</div>
+        <h2>Registration received</h2>
+        <p id="successMessage">The admin will contact you soon. Stay alerted.</p>
+        <p class="helper-text" id="notificationStatus"></p>
+        <div class="notify-actions" id="notificationActions" hidden>
+          <a class="primary-action" id="emailOwnerLink" href="#">Email admin</a>
+          <a class="secondary-action" id="smsOwnerLink" href="#">SMS admin</a>
+        </div>
+        <button class="primary-action" data-close="successModal" type="button">Done</button>
+      </div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
