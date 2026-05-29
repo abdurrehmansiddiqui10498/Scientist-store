@@ -627,7 +627,7 @@ function updateAuthView() {
   $("#authTitle").textContent = isAdmin ? "Admin sign in" : isSignup ? "Create local account" : "Local user sign in";
   $("#authSubmit").textContent = isSignup ? "Create account" : "Sign in";
   $("#authHelp").textContent = isAdmin
-    ? "Admins are predefined and cannot register. Use admin@bubloo.test with password Science@2026."
+    ? "Admins are predefined and cannot register."
     : isSignup
       ? "Local users can register, then buy products from the catalog."
       : "Sign in as a local user, or create a local account if you are new.";
